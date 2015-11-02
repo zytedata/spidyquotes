@@ -17,11 +17,12 @@ QUOTES = [json.loads(l) for l in open(os.path.join(DATA_DIR, 'quotesdb.jl'))]
 
 # PLAN:
 # [X] browse by tags
-# [ ] pagination
-# [ ] alternate endpoint with tables layout
-# [ ] alternate endpoint with data in JS code
-# [ ] alternate endpoint with AJAX UI
-# [ ] tag cloud
+# [X] add top ten tags
+# [ ] add pagination
+# [ ] add alternate template with data in JS code
+# [ ] add alternate template with AJAX UI
+# [ ] add microdata markup
+# [ ] add alternate template with tables layout
 
 
 def top_ten_tags():
