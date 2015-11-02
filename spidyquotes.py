@@ -18,7 +18,7 @@ QUOTES = [json.loads(l) for l in open(os.path.join(DATA_DIR, 'quotesdb.jl'))]
 # PLAN:
 # [X] browse by tags
 # [X] add top ten tags
-# [ ] add pagination
+# [X] add pagination
 # [ ] add alternate template with data in JS code
 # [ ] add alternate template with AJAX UI
 # [ ] add microdata markup
@@ -34,17 +34,19 @@ TOP_TEN_TAGS = top_ten_tags()
 
 
 @app.route("/")
-def index():
+@app.route("/page/<page>/")
+@app.route("/tag/<tag>/")
+@app.route("/tag/<tag>/page/<page>/")
+def index(tag=None, page=1):
+    if tag:
+        quotes = [q for q in QUOTES if tag in q['tags']]
+    else:
+        quotes = QUOTES
+    start, end = (int(page) - 1) * 10, int(page) * 10
     return render_template('index.html',
-                           quotes=QUOTES[0:10],
-                           top_ten_tags=TOP_TEN_TAGS)
-
-
-@app.route("/tag/<tag>")
-def quotes_by_tag(tag):
-    quotes = [q for q in QUOTES if tag in q['tags']]
-    return render_template('index.html',
-                           quotes=quotes[0:10],
+                           quotes=quotes[start:end],
+                           page=int(page),
+                           has_next=len(quotes) > int(page) * 10,
                            tag=tag,
                            top_ten_tags=TOP_TEN_TAGS)
 
