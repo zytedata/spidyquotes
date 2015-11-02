@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+{% if tag %}
+<h3>Viewing tag: <a href="{{ url_for('quotes_by_tag', tag=tag) }}">{{ tag }}</a></h3>
+{% endif %}
+<div class="row">
+    <div class="col-md-8">
+{% for quote in quotes %}
+    <div>
+        {{ quote.text }}
+        <small>{{ quote.author.name }}</small>
+        <div class="tags">
+            Tags:
+            {% for tag in quote.tags %}
+            <a href="{{ url_for('quotes_by_tag', tag=tag) }}">{{ tag }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    <hr />
+{% else %}
+No quotes found!
+{% endfor %}
+    </div>
+    <div class="col-md-4">
+        <h2>Top Ten tags</h2>
+        {% for tag, count in top_ten_tags %}
+        <span class="tag-item">
+        <a href="{{ url_for('quotes_by_tag', tag=tag) }}">{{ tag }}</a> ({{ count }})
+        </span>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

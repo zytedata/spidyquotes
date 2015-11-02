@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Spidy Quotes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>
+            <a href="{{ url_for('index') }}" style="text-decoration: none">Spidy Quotes</a>
+        </h1>
+    {% block content %}
+    {% endblock %}
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <p class="text-muted">
+                Quotes by: <a href="https://www.goodreads.com/quotes">GoodReads.com</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
