@@ -40,11 +40,15 @@ def index():
                            top_ten_tags=TOP_TEN_TAGS)
 
 
-@app.route("/tag/<tag>")
-def quotes_by_tag(tag):
+@app.route("/tag/<tag>/")
+@app.route("/tag/<tag>/page/<page>/")
+def quotes_by_tag(tag, page=1):
     quotes = [q for q in QUOTES if tag in q['tags']]
+    start, end = (int(page) - 1) * 10, int(page) * 10
     return render_template('index.html',
-                           quotes=quotes[0:10],
+                           quotes=quotes[start:end],
+                           page=int(page),
+                           has_next=len(quotes) > int(page) * 10,
                            tag=tag,
                            top_ten_tags=TOP_TEN_TAGS)
 
