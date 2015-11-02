@@ -33,23 +33,17 @@ def top_ten_tags():
 TOP_TEN_TAGS = top_ten_tags()
 
 
-@app.route("/page/<page>/")
 @app.route("/")
-def index(page=1):
-    start, end = (int(page) - 1) * 10, int(page) * 10
-    return render_template('pager_index.html',
-                           quotes=QUOTES[start:end],
-                           page=int(page),
-                           has_next=len(QUOTES) > int(page) * 10,
-                           top_ten_tags=TOP_TEN_TAGS)
-
-
+@app.route("/page/<page>/")
 @app.route("/tag/<tag>/")
 @app.route("/tag/<tag>/page/<page>/")
-def quotes_by_tag(tag, page=1):
-    quotes = [q for q in QUOTES if tag in q['tags']]
+def index(tag=None, page=1):
+    if tag:
+        quotes = [q for q in QUOTES if tag in q['tags']]
+    else:
+        quotes = QUOTES
     start, end = (int(page) - 1) * 10, int(page) * 10
-    return render_template('pager_quotes_by_tag.html',
+    return render_template('index.html',
                            quotes=quotes[start:end],
                            page=int(page),
                            has_next=len(quotes) > int(page) * 10,

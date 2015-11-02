@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 {% if tag %}
-<h3>Viewing tag: <a href="{{ url_for('quotes_by_tag', tag=tag) }}">{{ tag }}</a></h3>
+<h3>Viewing tag: <a href="{{ url_for('index', tag=tag, page=1) }}">{{ tag }}</a></h3>
 {% endif %}
 <div class="row">
     <div class="col-md-8">
@@ -12,7 +12,7 @@
         <div class="tags">
             Tags:
             {% for tag in quote.tags %}
-            <a href="{{ url_for('quotes_by_tag', tag=tag) }}">{{ tag }}</a>
+            <a href="{{ url_for('index', tag=tag, page=1) }}">{{ tag }}</a>
             {% endfor %}
         </div>
     </div>
@@ -20,15 +20,26 @@
 {% else %}
 No quotes found!
 {% endfor %}
-    {% block pager %}
-    
-    {% endblock %}
+    <nav>
+        <ul class="pager">
+            <li class="previous {% if page <= 1 %} disabled {% endif %}">
+                <a href="{% if page > 1 %} {{ url_for('index', tag=tag, page=page-1) }} {% endif %}">
+                    <span aria-hidden="true">&larr;</span> Previous
+                </a>
+            </li>
+            <li class="next {% if not has_next %} disabled {% endif %}">
+                <a href="{% if has_next %}{{ url_for('index', tag=tag, page=page+1) }} {% endif %}">Next 
+                    <span aria-hidden="true">&rarr;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
     </div>
     <div class="col-md-4">
         <h2>Top Ten tags</h2>
         {% for tag, count in top_ten_tags %}
         <span class="tag-item">
-        <a href="{{ url_for('quotes_by_tag', tag=tag) }}">{{ tag }}</a> ({{ count }})
+        <a href="{{ url_for('index', tag=tag) }}">{{ tag }}</a> ({{ count }})
         </span>
         {% endfor %}
     </div>
