@@ -20,20 +20,9 @@
 {% else %}
 No quotes found!
 {% endfor %}
-<nav>
-  <ul class="pager">
-    <li class="previous {% if page <= 1 %} disabled {% endif %}">
-        <a href="{% if page > 1 %} {{ url_for('quotes_by_tag', tag=tag, page=page-1) }} {% endif %}">
-            <span aria-hidden="true">&larr;</span> Previous
-        </a>
-    </li>
-    <li class="next {% if not has_next %} disabled {% endif %}">
-        <a href="{% if has_next %}{{ url_for('quotes_by_tag', tag=tag, page=page+1) }} {% endif %}">Next 
-            <span aria-hidden="true">&rarr;</span>
-        </a>
-    </li>
-  </ul>
-</nav>
+    {% block pager %}
+    
+    {% endblock %}
     </div>
     <div class="col-md-4">
         <h2>Top Ten tags</h2>
