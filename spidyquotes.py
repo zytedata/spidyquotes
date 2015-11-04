@@ -90,8 +90,8 @@ def api_quotes():
     return jsonify(data)
 
 
-@app.route("/ajax")
-def ajax():
+@app.route("/scroll")
+def scroll():
     return render_template('ajax.html')
 
 
