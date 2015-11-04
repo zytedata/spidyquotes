@@ -8,6 +8,7 @@ import os
 
 from flask import Flask, render_template, request, jsonify
 from collections import Counter
+from flask_limiter import Limiter
 
 
 app = Flask(__name__)
@@ -100,7 +101,8 @@ if '__main__' == __name__:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--debug', action='store_true')
     parser.add_argument('--host')
-
+    parser.add_argument('--throttle', action='store_true')
     args = parser.parse_args()
-
+    if args.throttle:
+        limiter = Limiter(app, global_limits=["1 per second"])
     app.run(debug=args.debug, host=args.host)
