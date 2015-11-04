@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="quotes"></div>
+<div id="loading" style="background-color: #eeeecc"><h5>Loading...</h5></div>
+<script src="{{ url_for('static', filename='jquery.js') }}"></script>
+<script>
+    $(function(){
+        var page = 1, tag = null, hasNextPage = true;
+        function appendQuotes(quotes) {
+            var $quotes = $('.quotes');
+            var html = $.map(quotes, function(d){
+                return "<p>" + d['text'] + " <small>&#8212;" + d['author']['name'] + "</small></p>";
+            }).join("<hr />");
+
+            $quotes.append(html);
+        }
+
+        function updatePage(page) {
+            $('#loading').show('fast');
+            $.get('/api/quotes', {page: page}).done(function(data) {
+                appendQuotes(data.quotes);
+                hasNextPage = data.has_next;
+                $('#loading').hide('fast');
+            });
+        }
+        updatePage(page);
+        $(window).on('scroll', function(){
+            var scrollTop = $(window).scrollTop();
+            var heightDiff = $(document).height() - $(window).height();
+            if (hasNextPage && Math.abs(scrollTop - heightDiff) <= 1){
+                page += 1;
+                console.log('scrolling to page: ' + page);
+                updatePage(page);
+            }
+        });
+    });
+</script>
+{% endblock %}

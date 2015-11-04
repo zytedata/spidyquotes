@@ -21,7 +21,7 @@ ITEMS_PER_PAGE = 10
 # [X] add top ten tags
 # [X] add pagination
 # [X] add alternate template with data in JS code
-# [ ] add alternate template with AJAX UI
+# [X] add alternate template with AJAX UI
 # [ ] add microdata markup
 # [X] add alternate template with tables layout
 
@@ -82,9 +82,17 @@ def data_in_js(page=1):
 
 @app.route("/api/quotes")
 def api_quotes():
+    import time; time.sleep(0.5);
     page = int(request.args.get('page', 1))
     tag = request.args.get('tag')
-    return jsonify(get_quotes_for_page(page=page, tag=tag))
+    data = get_quotes_for_page(page=page, tag=tag)
+    data['top_ten_tags'] = TOP_TEN_TAGS
+    return jsonify(data)
+
+
+@app.route("/ajax")
+def ajax():
+    return render_template('ajax.html')
 
 
 if '__main__' == __name__:
