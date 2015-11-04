@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<script>
+    var data = {{ formatted_quotes|safe }};
+    for (var i in data) {
+        var d = data[i];
+        document.write("<p>" + d['text'] + " <small>&#8212;" + d['author']['name'] + "</small></p><hr />");
+    }
+</script>
+<nav>
+    <ul class="pager">
+        {% if page > 1 %}
+        <li class="previous">
+            <a href="{{ url_for('data_in_js', tag=tag, page=page-1) }}"><span aria-hidden="true">&larr;</span> Previous</a>
+        </li>
+        {% endif %}
+        {% if has_next %}
+        <li class="next">
+            <a href="{{ url_for('data_in_js', tag=tag, page=page+1) }}">Next <span aria-hidden="true">&rarr;</span></a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endblock %}

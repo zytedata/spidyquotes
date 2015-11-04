@@ -20,7 +20,7 @@ ITEMS_PER_PAGE = 10
 # [X] browse by tags
 # [X] add top ten tags
 # [X] add pagination
-# [ ] add alternate template with data in JS code
+# [X] add alternate template with data in JS code
 # [ ] add alternate template with AJAX UI
 # [ ] add microdata markup
 # [X] add alternate template with tables layout
@@ -70,6 +70,14 @@ def tableful(tag=None, page=1):
     return render_template('tableful.html',
                            top_ten_tags=TOP_TEN_TAGS,
                            **params)
+
+
+@app.route("/js/")
+@app.route("/js/page/<page>/")
+def data_in_js(page=1):
+    params = get_quotes_for_page(page=page)
+    params['formatted_quotes'] = json.dumps(params['quotes'], indent=4)
+    return render_template('data_in_js.html', **params)
 
 
 if '__main__' == __name__:
