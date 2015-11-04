@@ -22,20 +22,25 @@ No quotes found!
 {% endfor %}
     <nav>
         <ul class="pager">
-            <li class="previous {% if page <= 1 %} disabled {% endif %}">
-                <a href="{% if page > 1 %} {{ url_for('index', tag=tag, page=page-1) }} {% endif %}">
+            {% if page > 1 %}
+            <li class="previous">
+                <a href="{{ url_for('index', tag=tag, page=page-1) }}">
                     <span aria-hidden="true">&larr;</span> Previous
                 </a>
             </li>
-            <li class="next {% if not has_next %} disabled {% endif %}">
-                <a href="{% if has_next %}{{ url_for('index', tag=tag, page=page+1) }} {% endif %}">Next 
+            {% endif %}
+            {% if has_next %}
+            <li class="next">
+                <a href="{{ url_for('index', tag=tag, page=page+1) }}">Next 
                     <span aria-hidden="true">&rarr;</span>
                 </a>
             </li>
+            {% endif %}
         </ul>
     </nav>
     </div>
     <div class="col-md-4">
+        {{ has_next }}
         <h2>Top Ten tags</h2>
         {% for tag, count in top_ten_tags %}
         <span class="tag-item">

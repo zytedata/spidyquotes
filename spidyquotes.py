@@ -15,7 +15,6 @@ app = Flask(__name__)
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
 QUOTES = [json.loads(l) for l in open(os.path.join(DATA_DIR, 'quotesdb.jl'))]
 ITEMS_PER_PAGE = 10
-TABLEFUL_MODE = False
 
 # PLAN:
 # [X] browse by tags
@@ -42,7 +41,7 @@ def get_quotes_for_page(page, tag=None):
     else:
         quotes = QUOTES
     start, end = (page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE
-    has_next_page = len(quotes) > int(page) * ITEMS_PER_PAGE,
+    has_next_page = len(quotes) > int(page) * ITEMS_PER_PAGE
     return dict(
         quotes=quotes[start:end],
         has_next=has_next_page,
@@ -57,8 +56,18 @@ def get_quotes_for_page(page, tag=None):
 @app.route("/tag/<tag>/page/<page>/")
 def index(tag=None, page=1):
     params = get_quotes_for_page(page=page, tag=tag)
-    template = 'tableful.html' if TABLEFUL_MODE else 'index.html'
-    return render_template(template,
+    return render_template('index.html',
+                           top_ten_tags=TOP_TEN_TAGS,
+                           **params)
+
+
+@app.route("/tableful/")
+@app.route("/tableful/page/<page>/")
+@app.route("/tableful/tag/<tag>/")
+@app.route("/tableful/tag/<tag>/page/<page>/")
+def tableful(tag=None, page=1):
+    params = get_quotes_for_page(page=page, tag=tag)
+    return render_template('tableful.html',
                            top_ten_tags=TOP_TEN_TAGS,
                            **params)
 
@@ -68,10 +77,7 @@ if '__main__' == __name__:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--debug', action='store_true')
     parser.add_argument('--host')
-    parser.add_argument('--tableful', action='store_true')
 
     args = parser.parse_args()
 
-    if args.tableful:
-        TABLEFUL_MODE = True
     app.run(debug=args.debug, host=args.host)

@@ -6,7 +6,7 @@
     <tr>
         <td>
         {% if tag %}
-            Viewing tag: <a href="{{ url_for('index', tag=tag, page=1) }}">{{ tag }}</a>
+            Viewing tag: <a href="{{ url_for('tableful', tag=tag, page=1) }}">{{ tag }}</a>
         {% endif %}
         </td>
         <td rowspan="5" style="padding-left: 50px;">
@@ -14,7 +14,7 @@
             </div>
             <h3>Top Ten tags</h3>
             {% for tag, count in top_ten_tags %}
-            <a href="{{ url_for('index', tag=tag, page=1) }}">{{ tag }}</a> ({{ count }}) <br />
+            <a href="{{ url_for('tableful', tag=tag, page=1) }}">{{ tag }}</a> ({{ count }}) <br />
             {% endfor %}
         </td>
     </tr>
@@ -25,12 +25,30 @@
         <tr>
             <td style="padding-bottom: 2em;">Tags:
                 {% for tag in quote.tags %}
-                <a href="{{ url_for('index', tag=tag, page=1) }}">{{ tag }}</a>
+                <a href="{{ url_for('tableful', tag=tag, page=1) }}">{{ tag }}</a>
                 {% endfor %}
         </td>
         </tr>
     {% else %}
     No quotes found!
     {% endfor %}
+    <tr>
+            {% if page > 1 %}
+            <td class="previous">
+                <a href="{{ url_for('tableful', tag=tag, page=page-1) }}">
+                    <span aria-hidden="true">&larr;</span> Previous
+                </a>
+            </td>
+            {% else %}
+            <td></td>
+            {% endif %}
+            {% if has_next %}
+            <td class="next">
+                <a href="{{ url_for('tableful', tag=tag, page=page+1) }}">Next 
+                    <span aria-hidden="true">&rarr;</span>
+                </a>
+            </td>
+            {% endif %}
+    </tr>
 </table>
 {% endblock %}
