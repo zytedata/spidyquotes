@@ -6,11 +6,12 @@
 <div class="row">
     <div class="col-md-8">
 {% for quote in quotes %}
-    <div>
-        {{ quote.text }}
-        <small>{{ quote.author.name }}</small>
+    <div itemscope itemtype="http://schema.org/CreativeWork">
+        <span itemprop="text">{{ quote.text }}</span>
+        <small><span itemprop="author">{{ quote.author.name }}</span></small>
         <div class="tags">
             Tags:
+            <meta itemprop="keywords" content="{{ quote.tags|join(',') }}" /    > 
             {% for tag in quote.tags %}
             <a href="{{ url_for('index', tag=tag, page=1) }}">{{ tag }}</a>
             {% endfor %}
