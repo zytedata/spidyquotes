@@ -23,7 +23,7 @@ ITEMS_PER_PAGE = 10
 # [X] add pagination
 # [X] add alternate template with data in JS code
 # [X] add alternate template with AJAX UI
-# [ ] add microdata markup
+# [X] add microdata markup
 # [X] add alternate template with tables layout
 
 

@@ -6,9 +6,9 @@
 <div class="row">
     <div class="col-md-8">
 {% for quote in quotes %}
-    <div itemscope itemtype="http://schema.org/CreativeWork">
+    <div class="quote" itemscope itemtype="http://schema.org/CreativeWork">
         <span itemprop="text">{{ quote.text }}</span>
-        <small><span itemprop="author">{{ quote.author.name }}</span></small>
+        <small itemprop="author">{{ quote.author.name }}</small>
         <div class="tags">
             Tags:
             <meta itemprop="keywords" content="{{ quote.tags|join(',') }}" /    > 
