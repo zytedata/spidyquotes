@@ -83,7 +83,6 @@ def data_in_js(page=1):
 
 @app.route("/api/quotes")
 def api_quotes():
-    import time; time.sleep(0.5);
     page = int(request.args.get('page', 1))
     tag = request.args.get('tag')
     data = get_quotes_for_page(page=page, tag=tag)
@@ -94,6 +93,13 @@ def api_quotes():
 @app.route("/scroll")
 def scroll():
     return render_template('ajax.html')
+
+
+if os.getenv('DYNO'):
+    print('running in heroku, enabling limit of 1 request per second...')
+    Limiter(app, global_limits=["1 per second"])
+else:
+    print('NOT running in heroku...')
 
 
 if '__main__' == __name__:
