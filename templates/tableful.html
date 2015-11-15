@@ -34,7 +34,7 @@
     {% endfor %}
     <tr>
             {% if page > 1 %}
-            <td class="previous">
+            <td>
                 <a href="{{ url_for('tableful', tag=tag, page=page-1) }}">
                     <span aria-hidden="true">&larr;</span> Previous
                 </a>
@@ -43,7 +43,7 @@
             <td></td>
             {% endif %}
             {% if has_next %}
-            <td class="next">
+            <td>
                 <a href="{{ url_for('tableful', tag=tag, page=page+1) }}">Next 
                     <span aria-hidden="true">&rarr;</span>
                 </a>
