@@ -8,9 +8,22 @@
 </head>
 <body>
     <div class="container">
-        <h1>
-            <a href="{{ url_for('index') }}" style="text-decoration: none">Spidy Quotes</a>
-        </h1>
+        <div class="row">
+            <div class="col-md-8">
+                <h1>
+                    <a href="{{ url_for('index') }}" style="text-decoration: none">Spidy Quotes</a>
+                </h1>
+            </div>
+            <div class="col-md-4">
+                <h3>
+                {% if authenticated %}
+                    <a href="{{ url_for('logout') }}">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}">Login</a>
+                {% endif %}
+                </h3>
+            </div>
+        </div>
     {% block content %}
     {% endblock %}
     </div>
