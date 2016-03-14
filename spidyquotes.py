@@ -5,6 +5,8 @@
 
 import json
 import os
+import random
+import string
 
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 from collections import Counter
@@ -28,6 +30,7 @@ ITEMS_PER_PAGE = 10
 # [X] add microdata markup
 # [X] add alternate template with tables layout
 # [X] add login
+# [X] add CSRF to login form
 
 
 def top_ten_tags():
@@ -101,10 +104,21 @@ def scroll():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST' and request.form.get('username'):
-        session['username'] = request.form.get('username')
-        return redirect(url_for('index'))
-    return render_template('login_page.html')
+    error = ''
+    if request.method == 'POST':
+        if not request.form.get('username'):
+            error = 'please, provide your username.'
+        elif request.form.get('csrf_token') != session.get('csrf_token'):
+            error = 'invalid CRSF token.'
+        else:
+            session['username'] = request.form.get('username')
+            return redirect(url_for('index'))
+    session['csrf_token'] = ''.join(
+        random.sample(string.ascii_letters, len(string.ascii_letters))
+    )
+    return render_template(
+        'login_page.html', csrf_token=session['csrf_token'], error=error
+    )
 
 
 @app.route('/logout')
