@@ -2,11 +2,15 @@
 {% block content %}
 <body>
     <form action="/login" method="post" accept-charset="utf-8">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}"/>
         <p>Username:</p>
         <input type="text" name="username" />
         <p>Password:</p>
         <input type="password" name="password" /> <br>
         <input type="submit" value="Login" />
+        {% if error %}
+        <p class="error">Error while logging in: {{ error }}</p>
+        {% endif %}
     </form>
 </body>
 {% endblock %}
