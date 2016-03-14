@@ -6,13 +6,15 @@
 import json
 import os
 
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 from collections import Counter
 from flask_limiter import Limiter
 
 
 app = Flask(__name__)
 
+app.secret_key = 'yabba dabba doo!'
+app.config['SESSION_TYPE'] = 'filesystem'
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
 QUOTES = [json.loads(l) for l in open(os.path.join(DATA_DIR, 'quotesdb.jl'))]
 ITEMS_PER_PAGE = 10
@@ -25,6 +27,7 @@ ITEMS_PER_PAGE = 10
 # [X] add alternate template with AJAX UI
 # [X] add microdata markup
 # [X] add alternate template with tables layout
+# [X] add login
 
 
 def top_ten_tags():
@@ -59,6 +62,7 @@ def index(tag=None, page=1):
     params = get_quotes_for_page(page=page, tag=tag)
     return render_template('index.html',
                            top_ten_tags=TOP_TEN_TAGS,
+                           authenticated='username' in session,
                            **params)
 
 
@@ -93,6 +97,20 @@ def api_quotes():
 @app.route("/scroll")
 def scroll():
     return render_template('ajax.html')
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST' and request.form.get('username'):
+        session['username'] = request.form.get('username')
+        return redirect(url_for('index'))
+    return render_template('login_page.html')
+
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('index'))
 
 
 if os.getenv('DYNO'):
