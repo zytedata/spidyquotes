@@ -2,7 +2,7 @@
 {% block content %}
 <body>
     <hr>
-    <form action="/filter.aspx" method="post" accept-charset="utf-8" name="filterform">
+    <form action="{{ url_for('filter') }}" method="post" accept-charset="utf-8" name="filterform">
         <div class="row">
             <div class="col-md-4 form-group">
                 <label for="author">Author</label>

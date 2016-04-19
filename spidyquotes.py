@@ -156,7 +156,7 @@ def filter():
     selected_author = request.form.get('author')
     viewstate_data = base64.b64decode(request.form.get('__VIEWSTATE')).decode('utf-8').split(',')
     if selected_author not in viewstate_data:
-        return redirect('/search')
+        return redirect(url_for('search'))
     selected_tag = request.form.get('tag')
     quotes = []
     if 'submit_button' in request.form:
