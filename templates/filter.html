@@ -6,7 +6,7 @@
         <div class="col-md-4 form-group">
             <label for="author">Author</label>
             <select class="form-control" name="author" id="author" onchange="__doPostBack()">
-                <option value="">----------</option>
+                <option>----------</option>
                 {% for author in authors %}
                 <option value="{{ author }}" {% if selected_author|string() ==  author|string() %} selected {% endif %}>
                     {{ author }}
@@ -19,7 +19,7 @@
         <div class="col-md-4 form-group">
             <label for="tag">Tag</label>
             <select class="form-control" name="tag" id="tag">
-                <option value="">----------</option>
+                <option>----------</option>
                 {% for tag in tags %}
                 <option value="{{ tag }}" {% if selected_tag|string() ==  tag|string() %} selected {% endif %}>
                     {{ tag }}
@@ -40,7 +40,8 @@
         <hr />
         {% for quote in quotes %}
         <div class="quote">
-            <span>{{ quote }}</span>
+            <span class="content">{{ quote }}</span> - 
+            <span class="author">{{ selected_author }}</span> (<span class="tag">{{ selected_tag }}</span>)
         </div>
         <hr />
         {% endfor %}

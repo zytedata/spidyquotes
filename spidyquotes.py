@@ -158,9 +158,7 @@ def filter():
     if selected_author not in viewstate_data:
         return redirect(url_for('search'))
     selected_tag = request.form.get('tag')
-    quotes = []
-    if 'submit_button' in request.form:
-        quotes = QUOTES_BY_AUTHOR_AND_TAGS.get(selected_author, {}).get(selected_tag)
+    quotes = QUOTES_BY_AUTHOR_AND_TAGS.get(selected_author, {}).get(selected_tag)
     return render_template(
         'filter.html',
         quotes=quotes,
