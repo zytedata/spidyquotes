@@ -9,7 +9,7 @@ import random
 import string
 
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for
-from collections import Counter
+from collections import Counter, defaultdict
 from flask_limiter import Limiter
 
 
@@ -31,6 +31,22 @@ ITEMS_PER_PAGE = 10
 # [X] add alternate template with tables layout
 # [X] add login
 # [X] add CSRF to login form
+# [ ] add viewstate support
+
+
+def quotes_by_author_and_tags():
+    dictlist = lambda: defaultdict(list)
+    authors = defaultdict(dictlist)
+    for quote in QUOTES:
+        name = quote.get('author', {}).get('name', '')
+        for tag in quote.get('tags', []):
+            # if tag not in authors[name]:
+            #     authors[name][tag] = []
+            authors[name][tag].append(quote.get('text'))
+    return authors
+
+
+QUOTES_BY_AUTHOR_AND_TAGS = quotes_by_author_and_tags()
 
 
 def top_ten_tags():
@@ -126,6 +142,21 @@ def logout():
     session.pop('username', None)
     return redirect(url_for('index'))
 
+
+@app.route('/filter', methods=['GET', 'POST'])
+def filter():
+    tags = ['----------']
+    if request.method == 'POST':
+        selected_author = request.form.get('author')
+        selected_tag = request.form.get('tag')
+        tags += QUOTES_BY_AUTHOR_AND_TAGS.get(selected_author).keys()
+        if 'btn' in request.form:
+            quotes = QUOTES_BY_AUTHOR_AND_TAGS.get(selected_author, {}).get(selected_tag)
+    return render_template(
+        'filter.html',
+        authors=['----------'] + QUOTES_BY_AUTHOR_AND_TAGS.keys(),
+        **locals()
+    )
 
 if os.getenv('DYNO'):
     print('running in heroku, enabling limit of 1 request per second...')
