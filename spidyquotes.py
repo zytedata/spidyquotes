@@ -7,9 +7,9 @@ import json
 import os
 import random
 import string
-
+import base64
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for
-from collections import Counter
+from collections import Counter, defaultdict
 from flask_limiter import Limiter
 
 
@@ -31,6 +31,19 @@ ITEMS_PER_PAGE = 10
 # [X] add alternate template with tables layout
 # [X] add login
 # [X] add CSRF to login form
+# [X] add viewstate support for ASP examples
+
+
+def quotes_by_author_and_tags():
+    authors = defaultdict(lambda: defaultdict(list))
+    for quote in QUOTES:
+        name = quote.get('author', {}).get('name', '')
+        for tag in quote.get('tags', []):
+            authors[name][tag].append(quote.get('text'))
+    return authors
+
+
+QUOTES_BY_AUTHOR_AND_TAGS = quotes_by_author_and_tags()
 
 
 def top_ten_tags():
@@ -125,6 +138,38 @@ def login():
 def logout():
     session.pop('username', None)
     return redirect(url_for('index'))
+
+
+@app.route('/search.aspx', methods=['GET'])
+def search():
+    authors = QUOTES_BY_AUTHOR_AND_TAGS.keys()
+    viewstate = base64.b64encode(','.join(authors).encode('utf-8'))
+    return render_template(
+        'filter.html',
+        authors=authors,
+        viewstate=viewstate
+    )
+
+
+@app.route('/filter.aspx', methods=['POST'])
+def filter():
+    selected_author = request.form.get('author')
+    viewstate_data = base64.b64decode(request.form.get('__VIEWSTATE')).decode('utf-8').split(',')
+    if selected_author not in viewstate_data:
+        return redirect('/search')
+    selected_tag = request.form.get('tag')
+    quotes = []
+    if 'submit_button' in request.form:
+        quotes = QUOTES_BY_AUTHOR_AND_TAGS.get(selected_author, {}).get(selected_tag)
+    return render_template(
+        'filter.html',
+        quotes=quotes,
+        selected_author=selected_author,
+        selected_tag=selected_tag,
+        authors=QUOTES_BY_AUTHOR_AND_TAGS.keys(),
+        tags=QUOTES_BY_AUTHOR_AND_TAGS.get(selected_author, {}).keys(),
+        viewstate=request.form.get('__VIEWSTATE')
+    )
 
 
 if os.getenv('DYNO'):
