@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-4 form-group">
             <label for="author">Author</label>
-            <select class="form-control" name="author" onchange="__doPostBack()">
+            <select class="form-control" name="author" id="author" onchange="__doPostBack()">
                 <option value="">----------</option>
                 {% for author in authors %}
                 <option value="{{ author }}" {% if selected_author|string() ==  author|string() %} selected {% endif %}>
@@ -18,7 +18,7 @@
     <div class="row">
         <div class="col-md-4 form-group">
             <label for="tag">Tag</label>
-            <select class="form-control" name="tag">
+            <select class="form-control" name="tag" id="tag">
                 <option value="">----------</option>
                 {% for tag in tags %}
                 <option value="{{ tag }}" {% if selected_tag|string() ==  tag|string() %} selected {% endif %}>
@@ -32,7 +32,7 @@
     {% if error %}
     <p class="error">Error validating ViewState! Are you a silly robot?</p>
     {% endif %}
-    <input type="hidden" name="__VIEWSTATE" value="{{ viewstate }}">
+    <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="{{ viewstate }}">
 </form>
 <div class="results">
     {% if quotes %}
