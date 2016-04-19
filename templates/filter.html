@@ -2,28 +2,34 @@
 {% block content %}
 <body>
     <hr>
-    <form action="/filter" method="post" accept-charset="utf-8" name="filterform">
-        <div class="form-group">
-            <label for="author">Author</label>
-            <select class="form-control" name="author" onchange="__doPostBack()">
-                {% for author in authors %}
-                <option value="{{ author }}" {% if currentauthor|string() ==  author|string() %} selected {% endif %}>
-                {{ author }}
-                </option>
-                {% endfor %}
-            </select>
+    <form action="/filter.aspx" method="post" accept-charset="utf-8" name="filterform">
+        <div class="row">
+            <div class="col-md-4 form-group">
+                <label for="author">Author</label>
+                <select class="form-control" name="author" onchange="__doPostBack()">
+                    <option value="">----------</option>
+                    {% for author in authors %}
+                    <option value="{{ author }}" {% if selected_author|string() ==  author|string() %} selected {% endif %}>
+                        {{ author }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="tag">Tag</label>
-            <select class="form-control" name="tag">
-                {% for tag in tags %}
-                <option value="{{ tag }}" {% if currenttag|string() ==  tag|string() %} selected {% endif %}>
-                {{ tag }}
-                </option>
-                {% endfor %}
-            </select>
+        <div class="row">
+            <div class="col-md-4 form-group">
+                <label for="tag">Tag</label>
+                <select class="form-control" name="tag">
+                    <option value="">----------</option>
+                    {% for tag in tags %}
+                    <option value="{{ tag }}" {% if selected_tag|string() ==  tag|string() %} selected {% endif %}>
+                        {{ tag }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
         </div>
-        <input name="btn" type="submit" value="Search" class="btn btn-default" />
+        <input name="submit_button" type="submit" value="Search" class="btn btn-default" />
         {% if error %}
         <p class="error">Error validating ViewState! Are you a silly robot?</p>
         {% endif %}
@@ -31,14 +37,15 @@
     </form>
     <div class="results">
         {% if quotes %}
-        <h3>Results</h3>
+            <h3>Results</h3>
+            <hr />
+            {% for quote in quotes %}
+            <div class="quote">
+                <span>{{ quote }}</span>
+            </div>
+            <hr />
+            {% endfor %}
         {% endif %}
-        {% for quote in quotes %}
-        <div class="quote">
-            <span>{{ quote }}</span>
-        </div>
-        <hr />
-        {% endfor %}
     </div>
     <script type="text/javascript">
         var theForm = document.forms['filterform'];
