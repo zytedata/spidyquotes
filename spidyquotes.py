@@ -159,6 +159,8 @@ def filter():
     if selected_author not in viewstate_data:
         return redirect(url_for('search'))
     selected_tag = request.form.get('tag')
+    if selected_tag:
+        viewstate_data.append(selected_tag)
     quotes = QUOTES_BY_AUTHOR_AND_TAGS.get(selected_author, {}).get(selected_tag)
     return render_template(
         'filter.html',
@@ -167,7 +169,7 @@ def filter():
         selected_tag=selected_tag,
         authors=QUOTES_BY_AUTHOR_AND_TAGS.keys(),
         tags=QUOTES_BY_AUTHOR_AND_TAGS.get(selected_author, {}).keys(),
-        viewstate=request.form.get('__VIEWSTATE')
+        viewstate=base64.b64encode(','.join(viewstate_data))
     )
 
 
