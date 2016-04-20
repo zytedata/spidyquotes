@@ -3,8 +3,9 @@
 """Run app
 """
 
-import json
 import os
+import json
+import uuid
 import random
 import string
 import base64
@@ -143,7 +144,7 @@ def logout():
 @app.route('/search.aspx', methods=['GET'])
 def search():
     authors = QUOTES_BY_AUTHOR_AND_TAGS.keys()
-    viewstate = base64.b64encode(','.join(authors).encode('utf-8'))
+    viewstate = base64.b64encode(uuid.uuid4().hex + ',' + ','.join(authors).encode('utf-8'))
     return render_template(
         'filter.html',
         authors=authors,
