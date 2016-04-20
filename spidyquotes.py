@@ -169,7 +169,7 @@ def filter():
         selected_tag=selected_tag,
         authors=QUOTES_BY_AUTHOR_AND_TAGS.keys(),
         tags=QUOTES_BY_AUTHOR_AND_TAGS.get(selected_author, {}).keys(),
-        viewstate=base64.b64encode(','.join(viewstate_data))
+        viewstate=base64.b64encode(','.join(viewstate_data).encode('utf-8'))
     )
 
 
