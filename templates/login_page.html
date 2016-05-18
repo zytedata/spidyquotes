@@ -1,13 +1,21 @@
 {% extends "base.html" %}
 {% block content %}
 <body>
-    <form action="/login" method="post" accept-charset="utf-8">
+    <form action="/login" method="post" accept-charset="utf-8" >
         <input type="hidden" name="csrf_token" value="{{ csrf_token }}"/>
-        <p>Username:</p>
-        <input type="text" name="username" />
-        <p>Password:</p>
-        <input type="password" name="password" /> <br>
-        <input type="submit" value="Login" />
+        <div class="row">
+            <div class="form-group col-xs-3">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username" name="username" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-xs-3">
+                <label for="username">Password</label>
+                <input type="password" class="form-control" id="password" name="password" />
+            </div>
+        </div>
+        <input type="submit" value="Login" class="btn btn-primary" />
         {% if error %}
         <p class="error">Error while logging in: {{ error }}</p>
         {% endif %}
