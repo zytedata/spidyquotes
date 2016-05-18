@@ -13,11 +13,10 @@
             Tags:
             <meta itemprop="keywords" content="{{ quote.tags|join(',') }}" /    > 
             {% for tag in quote.tags %}
-            <a href="{{ url_for('index', tag=tag, page=1) }}">{{ tag }}</a>
+            <a class="tag" href="{{ url_for('index', tag=tag, page=1) }}">{{ tag }}</a>
             {% endfor %}
         </div>
     </div>
-    <hr />
 {% else %}
 No quotes found!
 {% endfor %}
@@ -36,11 +35,11 @@ No quotes found!
         </ul>
     </nav>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4 tags-box">
         <h2>Top Ten tags</h2>
         {% for tag, count in top_ten_tags %}
         <span class="tag-item">
-        <a href="{{ url_for('index', tag=tag) }}">{{ tag }}</a> ({{ count }})
+        <a class="tag" style="font-size: {{count}}px" href="{{ url_for('index', tag=tag) }}">{{ tag }}</a>
         </span>
         {% endfor %}
     </div>
