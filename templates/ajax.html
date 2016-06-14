@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="quotes"></div>
+<div class="row">
+    <div class="col-md-8">
+        <div class="quotes"></div>
+    </div>
+</div>
 <div id="loading" style="background-color: #eeeecc"><h5>Loading...</h5></div>
 <script src="{{ url_for('static', filename='jquery.js') }}"></script>
 <script>
@@ -9,8 +13,11 @@
         function appendQuotes(quotes) {
             var $quotes = $('.quotes');
             var html = $.map(quotes, function(d){
-                return "<p>" + d['text'] + " <small>&#8212;" + d['author']['name'] + "</small></p>";
-            }).join("<hr />");
+                var tags = $.map(d['tags'], function(t) {
+                    return "<a class='tag'>" + t + "</a>";
+                }).join(" ");
+                return "<div class='quote'><span>" + d['text'] + "</span><small>" + d['author']['name'] + "</small><div class='tags'>Tags: " + tags + "</div></div>";
+            });
 
             $quotes.append(html);
         }
