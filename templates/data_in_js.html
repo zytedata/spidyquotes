@@ -1,11 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
+<script src="{{ url_for('static', filename='jquery.js') }}"></script>
 <script>
     var data = {{ formatted_quotes|safe }};
     for (var i in data) {
         var d = data[i];
-        document.write("<p>" + d['text'] + " <small>&#8212;" + d['author']['name'] + "</small></p><hr />");
-    }
+        var tags = $.map(d['tags'], function(t) {
+            return "<a class='tag'>" + t + "</a>";
+        }).join(" ");
+        document.write("<div class='quote'><span>" + d['text'] + "</span><small>" + d['author']['name'] + "</small><div class='tags'>Tags: " + tags + "</div></div>");
+        }
 </script>
 <nav>
     <ul class="pager">
