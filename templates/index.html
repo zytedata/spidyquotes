@@ -10,7 +10,7 @@
         <span itemprop="text">{{ quote.text }}</span>
         <small itemprop="author">{% if authenticated %}<a href="http://goodreads.com{{ quote.author.goodreads_link }}">{% endif %}{{ quote.author.name }}{% if authenticated %}</a>{% endif %}</small>
         <div class="tags">
-            Tags:
+            {% if quote.tags %}Tags:{% endif %}
             <meta itemprop="keywords" content="{{ quote.tags|join(',') }}" /    > 
             {% for tag in quote.tags %}
             <a class="tag" href="{{ url_for('index', tag=tag, page=1) }}">{{ tag }}</a>
