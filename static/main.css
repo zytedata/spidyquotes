@@ -28,12 +28,12 @@ body {
   box-shadow: 2px 2px 3px #333333;
 }
 
-.quote small {
+.quote small.author {
   font-weight: bold;
   color: #3677E8;
 }
 
-.quote span {
+.quote span.text {
   display: block;
   margin-bottom: 5px;
   font-size: large;

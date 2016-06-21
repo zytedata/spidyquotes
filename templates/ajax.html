@@ -16,7 +16,7 @@
                 var tags = $.map(d['tags'], function(t) {
                     return "<a class='tag'>" + t + "</a>";
                 }).join(" ");
-                return "<div class='quote'><span>" + d['text'] + "</span><small>" + d['author']['name'] + "</small><div class='tags'>Tags: " + tags + "</div></div>";
+                return "<div class='quote'><span class='text'>" + d['text'] + "</span><span>by <small class='author'>" + d['author']['name'] + "</small></span><div class='tags'>Tags: " + tags + "</div></div>";
             });
 
             $quotes.append(html);
