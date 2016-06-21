@@ -22,7 +22,7 @@ No quotes found!
 {% endfor %}
     <nav>
         <ul class="pager">
-            {% if page > 1 %}
+            {% if page and page > 1 %}
             <li class="previous">
                 <a href="{{ url_for('index', tag=tag, page=page-1) }}"><span aria-hidden="true">&larr;</span> Previous</a>
             </li>
@@ -36,12 +36,14 @@ No quotes found!
     </nav>
     </div>
     <div class="col-md-4 tags-box">
-        <h2>Top Ten tags</h2>
-        {% for tag, count in top_ten_tags %}
-        <span class="tag-item">
-        <a class="tag" style="font-size: {{count}}px" href="{{ url_for('index', tag=tag) }}">{{ tag }}</a>
-        </span>
-        {% endfor %}
+        {% if top_ten_tags %}
+            <h2>Top Ten tags</h2>
+            {% for tag, count in top_ten_tags %}
+            <span class="tag-item">
+            <a class="tag" style="font-size: {{count}}px" href="{{ url_for('index', tag=tag) }}">{{ tag }}</a>
+            </span>
+            {% endfor %}
+        {% endif %}
     </div>
 </div>
 {% endblock %}

@@ -22,18 +22,6 @@ DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
 QUOTES = [json.loads(l) for l in open(os.path.join(DATA_DIR, 'quotesdb.jl'))]
 ITEMS_PER_PAGE = 10
 
-# PLAN:
-# [X] browse by tags
-# [X] add top ten tags
-# [X] add pagination
-# [X] add alternate template with data in JS code
-# [X] add alternate template with AJAX UI
-# [X] add microdata markup
-# [X] add alternate template with tables layout
-# [X] add login
-# [X] add CSRF to login form
-# [X] add viewstate support for ASP examples
-
 
 def quotes_by_author_and_tags():
     authors = defaultdict(lambda: defaultdict(list))
@@ -114,6 +102,12 @@ def api_quotes():
 @app.route("/scroll")
 def scroll():
     return render_template('ajax.html')
+
+
+@app.route("/random")
+def random_quote():
+    i = random.randrange(0, len(QUOTES))
+    return render_template('index.html', quotes=[QUOTES[i]])
 
 
 @app.route('/login', methods=['GET', 'POST'])
