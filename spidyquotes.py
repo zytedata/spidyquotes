@@ -138,7 +138,9 @@ def logout():
 @app.route('/search.aspx', methods=['GET'])
 def search():
     authors = QUOTES_BY_AUTHOR_AND_TAGS.keys()
-    viewstate = base64.b64encode(uuid.uuid4().hex + ',' + ','.join(authors).encode('utf-8'))
+    viewstate = base64.b64encode(
+        uuid.uuid4().hex.encode('utf-8') + b',' + ','.join(authors).encode('utf-8')
+    ).decode('utf-8')
     return render_template(
         'filter.html',
         authors=authors,
@@ -163,7 +165,7 @@ def filter():
         selected_tag=selected_tag,
         authors=QUOTES_BY_AUTHOR_AND_TAGS.keys(),
         tags=QUOTES_BY_AUTHOR_AND_TAGS.get(selected_author, {}).keys(),
-        viewstate=base64.b64encode(','.join(viewstate_data).encode('utf-8'))
+        viewstate=base64.b64encode(','.join(viewstate_data).encode('utf-8')).decode('utf-8'),
     )
 
 
