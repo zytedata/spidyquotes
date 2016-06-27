@@ -1,9 +1,5 @@
 image: scrapinghub
 
-script:
-    - build_docker_image
-    - push_docker_image
-
 publish:
     docker:
         docker_host: $DOCKER_HOST
