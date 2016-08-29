@@ -1,5 +1,4 @@
-![Analytics](https://ga-beacon-shub.appspot.com/UA-20306421-8
-/spidyquotes?useReferrer)
+[![Analytics](https://ga-beacon-shub.appspot.com/UA-20306421-8/spidyquotes?useReferrer)](https://github.com/igrigorik/ga-beacon)
 
 
 # Spidy quotes
