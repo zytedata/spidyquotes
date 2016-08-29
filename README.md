@@ -1,3 +1,7 @@
+![Analytics](https://ga-beacon-shub.appspot.com/UA-20306421-8
+/spidyquotes?useReferrer)
+
+
 # Spidy quotes
 
 This is an example site for a web scraping tutorial
