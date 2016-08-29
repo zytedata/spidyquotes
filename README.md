@@ -9,4 +9,4 @@ This is an example site for a web scraping tutorial
 
 To run in development mode, use the `--debug` flag.
 
-[![Analytics](https://ga-beacon-shub.appspot.com/UA-20306421-8/spidyquotes?useReferrer&pixel)](https://github.com/igrigorik/ga-beacon)
+[![Analytics](https://ga-beacon-shub.appspot.com/UA-20306421-8/spidyquotes?useReferrer)](https://github.com/igrigorik/ga-beacon)
