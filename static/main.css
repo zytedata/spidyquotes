@@ -55,15 +55,18 @@ body {
 a.tag:hover {
   text-decoration: none;
 }
+
 /* Sticky footer styles */
 html {
   position: relative;
   min-height: 100%;
 }
+
 body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
 }
+
 .footer {
   position: absolute;
   bottom: 0;
@@ -84,4 +87,13 @@ body {
 .header-box p {
   margin-top: 30px;
   float: right;
+}
+
+.author-details  {
+  width: 80%;
+}
+
+.author-description {
+  text-align: justify;
+  margin-bottom: 20px;
 }

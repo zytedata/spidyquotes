@@ -12,14 +12,23 @@ import base64
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 from collections import Counter, defaultdict
 from flask_limiter import Limiter
-
+from slugify import slugify
 
 app = Flask(__name__)
 
 app.secret_key = 'yabba dabba doo!'
 app.config['SESSION_TYPE'] = 'filesystem'
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
+
 QUOTES = [json.loads(l) for l in open(os.path.join(DATA_DIR, 'quotesdb.jl'))]
+for quote in QUOTES:
+    quote['author']['slug'] = slugify(quote.get('author', {}).get('name'))
+
+AUTHORS = {}
+for l in open(os.path.join(DATA_DIR, 'authorsdb.jl')):
+    author = json.loads(l)
+    AUTHORS[slugify(author.get('name'))] = author
+
 ITEMS_PER_PAGE = 10
 
 
@@ -166,6 +175,14 @@ def filter():
         authors=QUOTES_BY_AUTHOR_AND_TAGS.keys(),
         tags=QUOTES_BY_AUTHOR_AND_TAGS.get(selected_author, {}).keys(),
         viewstate=base64.b64encode(','.join(viewstate_data).encode('utf-8')).decode('utf-8'),
+    )
+
+
+@app.route('/author/<authorslug>/')
+def author_details(authorslug):
+    return render_template(
+        'author.html',
+        author=AUTHORS.get(authorslug)
     )
 
 
