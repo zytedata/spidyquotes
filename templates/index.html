@@ -8,7 +8,7 @@
 {% for quote in quotes %}
     <div class="quote" itemscope itemtype="http://schema.org/CreativeWork">
         <span class="text" itemprop="text">{{ quote.text }}</span>
-        <span>by <small class="author" itemprop="author">{% if authenticated %}<a href="http://goodreads.com{{ quote.author.goodreads_link }}">{% endif %}{{ quote.author.name }}{% if authenticated %}</a>{% endif %}</small></span>
+        <span>by <small class="author" itemprop="author"><a href="/author/{{quote.author.slug}}">{{ quote.author.name }}</a>{% if authenticated %} - <a href="http://goodreads.com{{ quote.author.goodreads_link }}">on Goodreads</a>{% endif %}</small></span>
         <div class="tags">
             {% if quote.tags %}Tags:{% endif %}
             <meta class="keywords" itemprop="keywords" content="{{ quote.tags|join(',') }}" /    > 
@@ -40,7 +40,7 @@ No quotes found!
             <h2>Top Ten tags</h2>
             {% for tag, count in top_ten_tags %}
             <span class="tag-item">
-            <a class="tag" style="font-size: {{count}}px" href="{{ url_for('index', tag=tag) }}">{{ tag }}</a>
+            <a class="tag" style="font-size: {{count*2}}px" href="{{ url_for('index', tag=tag) }}">{{ tag }}</a>
             </span>
             {% endfor %}
         {% endif %}
