@@ -16,17 +16,20 @@ class GoodReadsQuotesSpider(CrawlSpider):
              follow=True,
              callback='parse_quotes'),
     )
-
+    trusted_authors = []
     start_urls = ['https://www.goodreads.com/quotes']
 
     def parse_quotes(self, response):
         for quote in response.css('div.quote'):
             item = self.extract_quote(quote)
-            yield scrapy.Request(
-                response.urljoin(item.get('author', {}).get('goodreads_link')),
-                callback=self.parse_author,
-                meta={'item': item}
-            )
+            if item.get('author', {}).get('name') in self.trusted_authors:
+                yield item
+            else:
+                yield scrapy.Request(
+                    response.urljoin(item.get('author', {}).get('goodreads_link')),
+                    callback=self.parse_author,
+                    meta={'item': item}
+                )
 
     def extract_quote(self, quote):
         def first(sel):
@@ -50,4 +53,5 @@ class GoodReadsQuotesSpider(CrawlSpider):
         ).extract_first()
         description = ' '.join(response.xpath('string(//div[@class="aboutAuthorInfo"]/span[2])').extract())
         if born_in and born_at and description:
+            self.trusted_authors.append(item.get('author', {}).get('name'))
             yield item

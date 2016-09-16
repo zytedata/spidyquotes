@@ -10,7 +10,7 @@ class GoodreadsAuthorDetailsSpider(scrapy.Spider):
     # download_delay = 0.5
 
     def start_requests(self):
-        with open("quotes-100.jl") as f:
+        with open("quotesdb.jl") as f:
             for line in f:
                 quote = json.loads(line)
                 yield scrapy.Request(
