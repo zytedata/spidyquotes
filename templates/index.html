@@ -8,7 +8,9 @@
 {% for quote in quotes %}
     <div class="quote" itemscope itemtype="http://schema.org/CreativeWork">
         <span class="text" itemprop="text">{{ quote.text }}</span>
-        <span>by <small class="author" itemprop="author"><a href="/author/{{quote.author.slug}}">{{ quote.author.name }}</a>{% if authenticated %} - <a href="http://goodreads.com{{ quote.author.goodreads_link }}">on Goodreads</a>{% endif %}</small></span>
+        <span>by <small class="author" itemprop="author">{{ quote.author.name }}</small>
+        <a href="/author/{{quote.author.slug}}">(about)</a>{% if authenticated %} - <a href="http://goodreads.com{{ quote.author.goodreads_link }}">(Goodreads page)</a>{% endif %}
+        </span>
         <div class="tags">
             {% if quote.tags %}Tags:{% endif %}
             <meta class="keywords" itemprop="keywords" content="{{ quote.tags|join(',') }}" /    > 
