@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<script src="{{ url_for('static', filename='jquery.js') }}"></script>
+<script>
+    var data = {{ formatted_quotes|safe }};
+    for (var i in data) {
+        var d = data[i];
+        var tags = $.map(d['tags'], function(t) {
+            return "<a class='tag'>" + t + "</a>";
+        }).join(" ");
+        document.write("<div class='quote'><span class='text'>" + d['text'] + "</span><span>by <small class='author'>" + d['author']['name'] + "</small></span><div class='tags'>Tags: " + tags + "</div></div>");
+    }
+    $(document).ready(function(){
+        $(".pager > .next > a").on("click", function() {
+            window.location.href = "{{ url_for('data_in_js_onclick', tag=tag, page=page+1) }}"
+        });
+        $(".pager > .previous > a").on("click", function() {
+            window.location.href = "{{ url_for('data_in_js_onclick', tag=tag, page=page-1) }}"
+        });
+    });
+</script>
+<nav>
+    <ul class="pager">
+        {% if page > 1 %}
+        <li class="previous">
+            <a><span aria-hidden="true">&larr;</span> Previous</a>
+        </li>
+        {% endif %}
+        {% if has_next %}
+        <li class="next">
+            <a>Next <span aria-hidden="true">&rarr;</span></a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endblock %}

@@ -99,6 +99,17 @@ def data_in_js(page=1):
     return render_template('data_in_js.html', **params)
 
 
+@app.route("/js-onclick/")
+@app.route("/js-onclick/page/<page>/")
+def data_in_js_onclick(page=1):
+    """Similar to data_in_js, but in this endpoint the pagination buttons are
+       based on JS.
+    """
+    params = get_quotes_for_page(page=page)
+    params['formatted_quotes'] = json.dumps(params['quotes'], indent=4)
+    return render_template('data_in_js_onclick.html', **params)
+
+
 @app.route("/api/quotes")
 def api_quotes():
     page = int(request.args.get('page', 1))
