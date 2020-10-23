@@ -1,8 +1,5 @@
 image: scrapinghub
-
-publish:
-    docker:
-        docker_host: $DOCKER_HOST
-        image_name: i.scrapinghub.com/spidyquotes/$CI_BRANCH
-        keep_build: true
-
+ 
+script:
+  - build_docker_image
+  - push_docker_image
