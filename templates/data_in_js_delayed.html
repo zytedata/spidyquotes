@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<script src="{{ url_for('static', filename='jquery.js') }}"></script>
+<script>
+    var delayInMilliseconds = {{ delay }}
+    setTimeout(function() {
+        var data = {{ formatted_quotes|safe }};
+        for (var i in data) {
+            var d = data[i];
+            var tags = $.map(d['tags'], function(t) {
+                return "<a class='tag'>" + t + "</a>";
+            }).join(" ");
+            document.getElementById("quotesPlaceholder").innerHTML += "<div class='quote'><span class='text'>" + d['text'] + "</span><span>by <small class='author'>" + d['author']['name'] + "</small></span><div class='tags'>Tags: " + tags + "</div></div>";
+        }
+    }, delayInMilliseconds);
+</script>
+<div id="quotesPlaceholder"></div>
+<nav>
+    <ul class="pager">
+        {% if page > 1 %}
+        <li class="previous">
+            <a href="{{ url_for('data_in_js_delayed', tag=tag, page=page-1) }}"><span aria-hidden="true">&larr;</span> Previous</a>
+        </li>
+        {% endif %}
+        {% if has_next %}
+        <li class="next">
+            <a href="{{ url_for('data_in_js_delayed', tag=tag, page=page+1) }}">Next <span aria-hidden="true">&rarr;</span></a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endblock %}

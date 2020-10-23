@@ -30,6 +30,7 @@ for l in open(os.path.join(DATA_DIR, 'authorsdb.jl')):
     AUTHORS[slugify(author.get('name'))] = author
 
 ITEMS_PER_PAGE = 10
+DEFAULT_DELAY = 10000
 
 
 def quotes_by_author_and_tags():
@@ -108,6 +109,18 @@ def data_in_js_onclick(page=1):
     params = get_quotes_for_page(page=page)
     params['formatted_quotes'] = json.dumps(params['quotes'], indent=4)
     return render_template('data_in_js_onclick.html', **params)
+
+
+@app.route("/js-delayed/")
+@app.route("/js-delayed/page/<page>/")
+def data_in_js_delayed(page=1):
+    """Similar to data_in_js, but in this endpoint there is a javascript delay
+       before displaying quotes.
+    """
+    params = get_quotes_for_page(page=page)
+    params['formatted_quotes'] = json.dumps(params['quotes'], indent=4)
+    params['delay'] = request.args.get('delay') or DEFAULT_DELAY
+    return render_template('data_in_js_delayed.html', **params)
 
 
 @app.route("/api/quotes")
