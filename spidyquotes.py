@@ -119,7 +119,10 @@ def data_in_js_delayed(page=1):
     """
     params = get_quotes_for_page(page=page)
     params['formatted_quotes'] = json.dumps(params['quotes'], indent=4)
-    params['delay'] = request.args.get('delay') or DEFAULT_DELAY
+    try:
+        params['delay'] = int(request.args.get('delay'))
+    except Exception:
+        params['delay'] = DEFAULT_DELAY
     return render_template('data_in_js_delayed.html', **params)
 
 
