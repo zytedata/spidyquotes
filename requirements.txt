@@ -1,4 +1,4 @@
-Flask==1.0
+Flask==2.3.2
 Flask-Limiter==0.8.5
 gunicorn==19.6.0
 awesome-slugify==1.6.5
