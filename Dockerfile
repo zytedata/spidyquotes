@@ -1,4 +1,4 @@
-FROM scrapinghub/python:3
+FROM python:3.11-slim
 EXPOSE 5000
 WORKDIR /app
 CMD ["/app/start-spidyquotes"]
