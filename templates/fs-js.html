@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{%block headExtend %}
+<script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js"></script>
+{% endblock %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-8" id="clickable">
+        <h2>Our system found something suspicious.</h2>
+        <h3>Click anywhere button to unlock site access</h3>
+    </div>
+
+
+<script>
+    // Initialize the FingerprintJS library
+    const fpPromise = FingerprintJS.load();
+    const myButton = document.getElementById("clickable");
+
+    // When the library is ready
+    fpPromise.then(fp => fp.get()).then(result => {
+        // Send the fingerprint to the server
+        const browserData = result.components;
+        const visitorId = result.visitorId;
+        const components = result.components;
+        let clicked = 0
+        myButton.addEventListener('click', function(event) {
+            clicked += 1
+        });
+
+        setTimeout(
+            function () {
+                fetch('/fingerprint', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    result: result,
+                    clicked: clicked
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (!data.allowed) {
+                    // If the fingerprint is not valid, redirect or block content
+                    document.body.innerHTML = "Access denied. Non-browser client detected.";
+                } else {
+                    window.location.reload(true)
+                }
+            })}, 6000);
+    });
+</script>
+
+</div>
+{% endblock %}

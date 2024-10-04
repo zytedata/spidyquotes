@@ -5,6 +5,8 @@
 	<title>Quotes to Scrape</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    {% block headExtend %}
+    {% endblock %}
 </head>
 <body>
     <div class="container">
