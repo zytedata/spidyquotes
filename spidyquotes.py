@@ -3,13 +3,14 @@
 """Run app
 """
 
+import datetime
 import os
 import json
 import uuid
 import random
 import string
 import base64
-from flask import Flask, render_template, request, jsonify, session, redirect, url_for
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for, make_response
 from collections import Counter, defaultdict
 from flask_limiter import Limiter
 from slugify import slugify
@@ -144,6 +145,32 @@ def scroll():
 def random_quote():
     i = random.randrange(0, len(QUOTES))
     return render_template('index.html', quotes=[QUOTES[i]])
+
+
+
+@app.route("/fingerprint", methods=["GET", "POST"])
+def fingerprint_check():
+    if request.method == 'POST':
+        data = request.get_json()
+        result = data['result']
+        confidenceScore = result['confidence']['score']
+        clicked = data.get('clicked')
+        if confidenceScore >= 0.6 and clicked:
+            response = make_response(jsonify({"allowed": True}))
+            expire_time = datetime.datetime.utcnow() + datetime.timedelta(seconds=30)
+            response.set_cookie('score', value=str(confidenceScore),
+                expires=expire_time)
+            response.set_cookie('visitorId', value=result['visitorId'], expires=expire_time)
+            return response
+        else:
+            return jsonify({"allowed": False})
+    else:
+        score = request.cookies.get('score')
+        visitor_id = request.cookies.get('visitorId')
+        if visitor_id and score and float(score) >= 0.6:
+            return render_template('ajax.html')
+        return render_template('fs-js.html')
+
 
 
 @app.route('/login', methods=['GET', 'POST'])
