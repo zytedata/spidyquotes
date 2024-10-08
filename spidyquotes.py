@@ -155,7 +155,7 @@ def fingerprint_check():
         result = data['result']
         confidenceScore = result['confidence']['score']
         clicked = data.get('clicked')
-        if confidenceScore >= 0.6 and clicked:
+        if confidenceScore >= 0.4 and clicked:
             response = make_response(jsonify({"allowed": True}))
             expire_time = datetime.datetime.utcnow() + datetime.timedelta(seconds=30)
             response.set_cookie('score', value=str(confidenceScore),
